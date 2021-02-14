@@ -9,6 +9,8 @@ public class PlayerControlBehaviour : MonoBehaviour
     private AnimationCurve _velocityCurve;
     [SerializeField]
     private float _velocityMultiplier = 5f;
+    [SerializeField]
+    private GravityObject _gravytyObject;
 
     private bool _isControlling = false;
 
@@ -19,6 +21,12 @@ public class PlayerControlBehaviour : MonoBehaviour
     private void Awake()
     {
         _body = GetComponent<Rigidbody>();
+    }
+
+    private void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void Update()
@@ -42,6 +50,8 @@ public class PlayerControlBehaviour : MonoBehaviour
     {
         if (_isControlling)
             ProcessInput();
+
+        _gravytyObject.GravityCenter = transform.position;
     }
 
     private void ProcessInput()

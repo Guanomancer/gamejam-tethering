@@ -11,11 +11,19 @@ public class TetherControlBehaviour : MonoBehaviour
     private float _maxVelocity = 1f;
 
     [SerializeField]
+    private GravityObject _gravityObject;
+
+    [SerializeField]
     private Transform _targetObject;
+
+    [SerializeField]
+    private float _rotatyness = 1;
 
     private Plane _zeroPlane = new Plane(Vector3.up, Vector3.zero);
 
     private Rigidbody _body;
+
+    public void SetTarget(Transform newTarget) => _targetObject = newTarget;
 
     private void Awake()
     {
@@ -24,7 +32,8 @@ public class TetherControlBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ProcessTether();
+        if(_targetObject != null)
+            ProcessTether();
 
         var velocity = _body.velocity.magnitude;
         if(velocity > _maxVelocity)
@@ -34,11 +43,23 @@ public class TetherControlBehaviour : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        var tether = collision.transform.GetComponent<TetherControlBehaviour>();
+        if (tether != null)
+        {
+            if (_targetObject == null)
+                SetTarget(tether._targetObject);
+            else
+                _body.angularVelocity += Random.insideUnitSphere * _rotatyness;
+        }
+    }
+
     private void ProcessTether()
     {
-        var point = _targetObject.position;
+        var point = _gravityObject.GravityCenter;
         var relativePoint = transform.position - point;
-        var inverseDirection = -relativePoint.normalized;
-        Physics.gravity = inverseDirection * _gravityStrength;
+        var inverseDirection = -relativePoint;
+        _body.AddForce(inverseDirection * _gravityStrength * Time.deltaTime);
     }
 }
