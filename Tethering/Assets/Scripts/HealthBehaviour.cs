@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class HealthBehaviour : MonoBehaviour
 {
@@ -11,14 +13,32 @@ public class HealthBehaviour : MonoBehaviour
     [SerializeField]
     private UnityEvent DestroyedOrKilled;
 
+    [SerializeField]
+    private Transform _textField;
+
     public void Damage(int amount, out bool destroyOrKill)
     {
         Hitpoints -= amount;
         if (Hitpoints < 0)
             Hitpoints = 0;
         destroyOrKill = Hitpoints == 0;
-        Debug.Log($"HP: {Hitpoints}");
         if (destroyOrKill)
             DestroyedOrKilled?.Invoke();
+
+        UpdateTextField();
+    }
+
+    private void UpdateTextField()
+    {
+        if (_textField != null)
+        {
+            var text = _textField.GetComponent<TextMeshProUGUI>();
+            text.text = $"HP: {Hitpoints}";
+        }
+    }
+
+    private void OnEnable()
+    {
+        UpdateTextField();
     }
 }

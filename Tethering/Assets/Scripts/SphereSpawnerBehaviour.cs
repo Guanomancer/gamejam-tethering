@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SphereSpawnerBehaviour : MonoBehaviour
@@ -16,6 +17,9 @@ public class SphereSpawnerBehaviour : MonoBehaviour
     private float _spawnPlayerRadiusMin = 5f;
     [SerializeField]
     private float _spawnSceneRadiusMax = 20f;
+
+    [SerializeField]
+    private TextMeshProUGUI _pointsTextField;
 
     private float _nextSpawn = 0f;
 
@@ -40,6 +44,8 @@ public class SphereSpawnerBehaviour : MonoBehaviour
                 position = randomPosition;
         } while (position == Vector3.zero);
 
-        Instantiate(_spherePrefab, position, Quaternion.identity);
+        var sphere = Instantiate(_spherePrefab, position, Quaternion.identity);
+        var points = sphere.GetComponent<PointBehaviour>();
+        points.PointsTextField = _pointsTextField;
     }
 }

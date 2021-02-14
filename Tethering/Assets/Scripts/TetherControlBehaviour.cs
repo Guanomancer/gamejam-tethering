@@ -7,8 +7,10 @@ public class TetherControlBehaviour : MonoBehaviour
 {
     [SerializeField]
     private float _gravityStrength = 5f;
+    //[SerializeField]
+    //private float _velocityTimeScale = 1f;
     [SerializeField]
-    private float _maxVelocity = 1f;
+    private float _maxVelocity = 10f;
 
     [SerializeField]
     private GravityObject _gravityObject;
