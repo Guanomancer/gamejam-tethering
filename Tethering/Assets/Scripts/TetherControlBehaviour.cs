@@ -10,7 +10,8 @@ public class TetherControlBehaviour : MonoBehaviour
     [SerializeField]
     private float _maxVelocity = 1f;
 
-    private bool _isControlling = false;
+    [SerializeField]
+    private Transform _targetObject;
 
     private Plane _zeroPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -21,27 +22,9 @@ public class TetherControlBehaviour : MonoBehaviour
         _body = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-        if(Input.GetMouseButton(0))
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            _isControlling = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            _isControlling = false;
-            Physics.gravity = Vector3.zero;
-        }
-    }
-
     private void FixedUpdate()
     {
-        if (_isControlling)
-            ProcessInput();
+        ProcessTether();
 
         var velocity = _body.velocity.magnitude;
         if(velocity > _maxVelocity)
@@ -51,15 +34,11 @@ public class TetherControlBehaviour : MonoBehaviour
         }
     }
 
-    private void ProcessInput()
+    private void ProcessTether()
     {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(_zeroPlane.Raycast(ray, out float distance))
-        {
-            var point = ray.GetPoint(distance);
-            var relativePoint = transform.position - point;
-            var inverseDirection = -relativePoint.normalized;
-            Physics.gravity = inverseDirection * _gravityStrength;
-        }
+        var point = _targetObject.position;
+        var relativePoint = transform.position - point;
+        var inverseDirection = -relativePoint.normalized;
+        Physics.gravity = inverseDirection * _gravityStrength;
     }
 }

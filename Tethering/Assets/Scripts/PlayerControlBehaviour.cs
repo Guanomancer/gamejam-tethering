@@ -10,6 +10,8 @@ public class PlayerControlBehaviour : MonoBehaviour
     [SerializeField]
     private float _velocityMultiplier = 5f;
 
+    private bool _isControlling = false;
+
     private Plane _zeroPlane = new Plane(Vector3.up, Vector3.zero);
 
     private Rigidbody _body;
@@ -20,6 +22,29 @@ public class PlayerControlBehaviour : MonoBehaviour
     }
 
     private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            _isControlling = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _isControlling = false;
+            Physics.gravity = Vector3.zero;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_isControlling)
+            ProcessInput();
+    }
+
+    private void ProcessInput()
     {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (_zeroPlane.Raycast(ray, out float distance))
