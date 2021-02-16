@@ -23,6 +23,11 @@ public class SphereSpawnerBehaviour : MonoBehaviour
 
     private float _nextSpawn = 0f;
 
+    private void Awake()
+    {
+        _nextSpawn = Time.time + _spawnInterval;
+    }
+
     private void Update()
     {
         if (_nextSpawn <= Time.time)

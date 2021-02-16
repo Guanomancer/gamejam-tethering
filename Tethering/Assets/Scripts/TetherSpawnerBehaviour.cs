@@ -9,6 +9,8 @@ public class TetherSpawnerBehaviour : MonoBehaviour
     private GameObject _tetherPrefab;
     [SerializeField]
     private GameObject _playerObject;
+    [SerializeField]
+    private bool _setTargetAtSpawn = false;
 
     [SerializeField]
     private float _spawnInterval = 10f;
@@ -22,6 +24,11 @@ public class TetherSpawnerBehaviour : MonoBehaviour
     private GameBehaviour _gameBehaviour;
 
     private float _nextSpawn = 0f;
+
+    private void Awake()
+    {
+        _nextSpawn = Time.time + _spawnInterval;
+    }
 
     private void Update()
     {
@@ -45,6 +52,9 @@ public class TetherSpawnerBehaviour : MonoBehaviour
         } while (position == Vector3.zero);
 
         var obj = Instantiate(_tetherPrefab, position, Quaternion.identity);
-        obj.GetComponent<TetherControlBehaviour>().GameTimeOffset = _gameBehaviour.GameTimeOffset;
+        var tether = obj.GetComponent<TetherControlBehaviour>();
+        tether.GameTimeOffset = _gameBehaviour.GameTimeOffset;
+        if(_setTargetAtSpawn)
+            tether.SetTarget(_playerObject.transform);
     }
 }
