@@ -7,8 +7,7 @@ public class TetherControlBehaviour : MonoBehaviour
 {
     [SerializeField]
     private float _gravityStrength = 5f;
-    //[SerializeField]
-    //private float _velocityTimeScale = 1f;
+
     [SerializeField]
     private float _maxVelocity = 10f;
 
@@ -20,6 +19,9 @@ public class TetherControlBehaviour : MonoBehaviour
 
     [SerializeField]
     private float _rotatyness = 1;
+
+    [SerializeField]
+    private GameObject CollisionEffect;
 
     private Plane _zeroPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -51,7 +53,11 @@ public class TetherControlBehaviour : MonoBehaviour
         if (tether != null)
         {
             if (_targetObject == null)
+            {
                 SetTarget(tether._targetObject);
+                if (CollisionEffect != null)
+                    Instantiate(CollisionEffect, transform.position, transform.rotation);
+            }
             else
                 _body.angularVelocity += Random.insideUnitSphere * _rotatyness;
         }

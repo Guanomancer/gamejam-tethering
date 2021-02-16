@@ -7,6 +7,12 @@ public class DamageBehaviour : MonoBehaviour
     [SerializeField]
     private int _damageAmount = 40;
 
+    [SerializeField]
+    private GameObject SpawnOnDamage;
+
+    [SerializeField]
+    private GameObject SpawnOnHit;
+
     private void OnCollisionEnter(Collision collision)
     {
         OnHit(collision.transform);
@@ -23,6 +29,10 @@ public class DamageBehaviour : MonoBehaviour
         if (health != null)
         {
             health.Damage(_damageAmount, out bool destroyOrKill);
+            if (SpawnOnDamage != null)
+                Instantiate(SpawnOnDamage, transform.position, transform.rotation);
         }
+        if (SpawnOnHit != null)
+            Instantiate(SpawnOnHit, transform.position, transform.rotation);
     }
 }

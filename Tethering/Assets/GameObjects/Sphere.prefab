@@ -130,6 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageAmount: 40
+  SpawnOnDamage: {fileID: 0}
+  SpawnOnHit: {fileID: 0}
 --- !u!114 &5370607222038831566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,6 +160,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  SpawnOnDestroyOrKilled: {fileID: 2994049833057877991, guid: 5d68f6a0768b2274eb4970cb7ca92885, type: 3}
   _textField: {fileID: 0}
 --- !u!114 &4036339355882741344
 MonoBehaviour:
@@ -171,6 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd5c14b8bdfce749b5292b59475b0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _points: 50
+  PointsTextField: {fileID: 0}
 --- !u!135 &5370607222038831561
 SphereCollider:
   m_ObjectHideFlags: 0

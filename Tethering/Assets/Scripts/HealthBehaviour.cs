@@ -14,6 +14,9 @@ public class HealthBehaviour : MonoBehaviour
     private UnityEvent DestroyedOrKilled;
 
     [SerializeField]
+    private GameObject SpawnOnDestroyOrKilled;
+
+    [SerializeField]
     private Transform _textField;
 
     public void Damage(int amount, out bool destroyOrKill)
@@ -23,7 +26,11 @@ public class HealthBehaviour : MonoBehaviour
             Hitpoints = 0;
         destroyOrKill = Hitpoints == 0;
         if (destroyOrKill)
+        {
             DestroyedOrKilled?.Invoke();
+            if (SpawnOnDestroyOrKilled != null)
+                Instantiate(SpawnOnDestroyOrKilled, transform.position, transform.rotation);
+        }
 
         UpdateTextField();
     }

@@ -227,6 +227,7 @@ MonoBehaviour:
   _gravityObject: {fileID: 11400000, guid: b0facdeeff9024f4f97c3959842df403, type: 2}
   _targetObject: {fileID: 0}
   _rotatyness: 50
+  CollisionEffect: {fileID: 4212237911574779972, guid: 39674e07b30a87f458f7bf9e56c45bd5, type: 3}
 --- !u!114 &6179847065988292030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageAmount: 10
+  SpawnOnDamage: {fileID: 0}
+  SpawnOnHit: {fileID: 0}
 --- !u!65 &6179847065988292017
 BoxCollider:
   m_ObjectHideFlags: 0
