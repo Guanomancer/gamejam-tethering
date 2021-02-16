@@ -18,6 +18,9 @@ public class TetherSpawnerBehaviour : MonoBehaviour
     [SerializeField]
     private float _spawnSceneRadiusMax = 20f;
 
+    [SerializeField]
+    private GameBehaviour _gameBehaviour;
+
     private float _nextSpawn = 0f;
 
     private void Update()
@@ -25,11 +28,11 @@ public class TetherSpawnerBehaviour : MonoBehaviour
         if (_nextSpawn <= Time.time)
         {
             _nextSpawn = Time.time + _spawnInterval;
-            SpawnSphere();
+            SpawnTether();
         }
     }
 
-    private void SpawnSphere()
+    private void SpawnTether()
     {
         var randomPosition = Vector3.zero;
         var position = Vector3.zero;
@@ -41,6 +44,7 @@ public class TetherSpawnerBehaviour : MonoBehaviour
                 position = randomPosition;
         } while (position == Vector3.zero);
 
-        Instantiate(_tetherPrefab, position, Quaternion.identity);
+        var obj = Instantiate(_tetherPrefab, position, Quaternion.identity);
+        obj.GetComponent<TetherControlBehaviour>().GameTimeOffset = _gameBehaviour.GameTimeOffset;
     }
 }

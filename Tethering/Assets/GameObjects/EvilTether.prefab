@@ -152,7 +152,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 11b51ca0f32a17345a06cb970f70b52d, type: 2}
+  - {fileID: 2100000, guid: fda6ea29984aa974fba2d4887c201295, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 6179847065988292017}
   - component: {fileID: 6179847065988292016}
   m_Layer: 0
-  m_Name: Tether
+  m_Name: EvilTether
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,15 +222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd50e4b30ad7af40aae6e0848b1b4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gravityStrength: 100
-  _maxVelocity: 10
+  _gravityStrength: 50
+  _maxVelocity: 5
   _gravityObject: {fileID: 11400000, guid: b0facdeeff9024f4f97c3959842df403, type: 2}
   _targetObject: {fileID: 0}
   _rotatyness: 50
   CollisionEffect: {fileID: 4212237911574779972, guid: 39674e07b30a87f458f7bf9e56c45bd5, type: 3}
-  _startSpeedMultiplier: 0.5
+  _startSpeedMultiplier: 1
   _maxSpeedMultiplier: 2
-  _speedMultiplierTimeScalar: 60
+  _speedMultiplierTimeScalar: 300
   GameTimeOffset: 0
 --- !u!114 &6179847065988292030
 MonoBehaviour:
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb1d06559436f5418ed1bb8014a9e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageAmount: 10
+  _damageAmount: 1000
   SpawnOnDamage: {fileID: 0}
   SpawnOnHit: {fileID: 0}
 --- !u!65 &6179847065988292017

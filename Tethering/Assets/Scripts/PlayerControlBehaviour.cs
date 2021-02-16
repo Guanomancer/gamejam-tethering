@@ -12,8 +12,6 @@ public class PlayerControlBehaviour : MonoBehaviour
     [SerializeField]
     private GravityObject _gravytyObject;
 
-    private bool _isControlling = false;
-
     private Plane _zeroPlane = new Plane(Vector3.up, Vector3.zero);
 
     private Rigidbody _body;
@@ -35,21 +33,18 @@ public class PlayerControlBehaviour : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
-            _isControlling = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            _isControlling = false;
             Physics.gravity = Vector3.zero;
         }
     }
 
     private void FixedUpdate()
     {
-        if (_isControlling)
-            ProcessInput();
+        ProcessInput();
 
         _gravytyObject.GravityCenter = transform.position;
     }
