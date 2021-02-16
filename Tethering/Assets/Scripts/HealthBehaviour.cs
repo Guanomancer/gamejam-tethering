@@ -11,6 +11,9 @@ public class HealthBehaviour : MonoBehaviour
     private int Hitpoints = 100;
 
     [SerializeField]
+    private UnityEvent DamageTaken;
+
+    [SerializeField]
     private UnityEvent DestroyedOrKilled;
 
     [SerializeField]
@@ -31,6 +34,8 @@ public class HealthBehaviour : MonoBehaviour
             if (SpawnOnDestroyOrKilled != null)
                 Instantiate(SpawnOnDestroyOrKilled, transform.position, transform.rotation);
         }
+        else
+            DamageTaken?.Invoke();
 
         UpdateTextField();
     }

@@ -9,9 +9,13 @@ public class GameBehaviour : MonoBehaviour
     [SerializeField]
     private float _gameRestartDelay = 1.0f;
 
-    public void Restart()
+    private void Awake()
     {
         PointBehaviour.Score = 0;
+    }
+
+    public void Restart()
+    {
         StartCoroutine(LoadSceneAfterDelay());
     }
 
