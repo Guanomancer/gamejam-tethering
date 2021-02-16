@@ -11,6 +11,7 @@ public class GameBehaviour : MonoBehaviour
 
     public void Restart()
     {
+        PointBehaviour.Score = 0;
         StartCoroutine(LoadSceneAfterDelay());
     }
 
