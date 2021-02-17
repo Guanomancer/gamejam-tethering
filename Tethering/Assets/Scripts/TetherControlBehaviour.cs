@@ -47,12 +47,12 @@ public class TetherControlBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_targetObject != null)
+        if (_targetObject != null)
             _gravityObject?.ProcessTether(gameObject, _body, _gravityStrength * ActualSpeedScalar);
 
         var actualMaxVelocity = _maxVelocity * ActualSpeedScalar;
         var velocity = _body.velocity.magnitude;
-        if(velocity > actualMaxVelocity)
+        if (velocity > actualMaxVelocity)
         {
             var direction = _body.velocity.normalized;
             _body.velocity = direction * actualMaxVelocity;
