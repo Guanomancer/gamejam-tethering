@@ -185,6 +185,8 @@ GameObject:
   - component: {fileID: 6179847065988292018}
   - component: {fileID: 6179847065988292019}
   - component: {fileID: 6179847065988292030}
+  - component: {fileID: 4665159773228171859}
+  - component: {fileID: 6335311920754590709}
   - component: {fileID: 6179847065988292017}
   - component: {fileID: 6179847065988292016}
   m_Layer: 0
@@ -247,6 +249,51 @@ MonoBehaviour:
   _damageAmount: 10
   SpawnOnDamage: {fileID: 0}
   SpawnOnHit: {fileID: 0}
+--- !u!114 &4665159773228171859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179847065988292021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a161a1a791b9144a448412e67072a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hitpoints: 2000
+  DamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  DestroyedOrKilled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6335311920754590709}
+        m_TargetAssemblyTypeName: DestroyBehaviour, Assembly-CSharp
+        m_MethodName: Destroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  SpawnOnDestroyOrKilled: {fileID: 3302442364004722511, guid: 0a58cae834db8cc4bb4d0750f9076702, type: 3}
+  _textField: {fileID: 0}
+--- !u!114 &6335311920754590709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179847065988292021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b6d42b60ffe034e88cbe0520f3af2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &6179847065988292017
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class GameBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject _playerObject;
 
+    [HideInInspector]
     public float GameTimeOffset = 0;
 
     private void Awake()

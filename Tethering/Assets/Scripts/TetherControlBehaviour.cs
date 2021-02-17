@@ -47,8 +47,6 @@ public class TetherControlBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(ActualSpeedScalar);
-
         if(_targetObject != null)
             _gravityObject?.ProcessTether(gameObject, _body, _gravityStrength * ActualSpeedScalar);
 
