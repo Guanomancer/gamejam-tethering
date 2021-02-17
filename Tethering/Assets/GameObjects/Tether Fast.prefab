@@ -222,8 +222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd50e4b30ad7af40aae6e0848b1b4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gravityStrength: 100
-  _maxVelocity: 10
+  _gravityStrength: 75
+  _maxVelocity: 7
   _gravityObject: {fileID: 11400000, guid: b0facdeeff9024f4f97c3959842df403, type: 2}
   _targetObject: {fileID: 0}
   _rotatyness: 50
