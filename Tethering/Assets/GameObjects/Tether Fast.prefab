@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageAmount: 10
-  SpawnOnDamage: {fileID: 0}
+  SpawnOnDamage: {fileID: 8856629437242833163, guid: c46fa45143905a4469184dc42e42acd5, type: 3}
   SpawnOnHit: {fileID: 0}
 --- !u!65 &6179847065988292017
 BoxCollider:
@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a161a1a791b9144a448412e67072a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hitpoints: 1000
+  Hitpoints: 250
   DamageTaken:
     m_PersistentCalls:
       m_Calls: []
