@@ -949,14 +949,13 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Instructions:
 
+    You control the blue cube. Don''t let it get hit by
+    anything.
 
-    Hold left mouse to control the blue cube.
+    Destroy the red spheres to score points.
 
-    Avoid
-    the green and red objects.
-
-    Use the green cubes to pick up green and red
-    objects.'
+    The yellow, orange
+    and red cubes are Stronger Together.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1230,7 +1229,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4665159773228171859, guid: 7b374ec79442de74b9c45b7770fb1158, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7b374ec79442de74b9c45b7770fb1158, type: 3}
 --- !u!1 &421187737 stripped
 GameObject:
