@@ -36,7 +36,8 @@ public class HighScoreLoaderBehaviour : MonoBehaviour
             Destroy(entry);
         _entries.Clear();
 
-        StartCoroutine(LoadThread());
+        LoadUnthread();
+        //StartCoroutine(LoadThread());
     }
 
     private void OnEnable() => Reload();
@@ -60,6 +61,34 @@ public class HighScoreLoaderBehaviour : MonoBehaviour
         thread.Start();
         while (thread.IsAlive)
             yield return new WaitForSeconds(.1f);
+        if (wasLoadet)
+        {
+            foreach (var entry in _board)
+            {
+                var obj = Instantiate(_highScoreEntryPrefab, transform);
+                _entries.Add(obj);
+                var fields = obj.GetComponentsInChildren<TextMeshProUGUI>();
+                fields[0].text = entry.Player;
+                fields[1].text = entry.Points.ToString();
+            }
+        }
+        else
+            _title.text = _failedToLoadText;
+    }
+
+    private void LoadUnthread()
+    {
+        bool wasLoadet = false;
+        switch (_boardType)
+        {
+            case BoardType.Daily:
+                wasLoadet = _tetherNet.Client.GetDailyScoreBoard(out _board);
+                break;
+            case BoardType.AllTime:
+            default:
+                wasLoadet = _tetherNet.Client.GetInfiniteScoreBoard(out _board);
+                break;
+        }
         if (wasLoadet)
         {
             foreach (var entry in _board)

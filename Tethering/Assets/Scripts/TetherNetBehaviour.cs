@@ -41,7 +41,8 @@ public class TetherNetBehaviour : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(StartGameThread());
+        StartGameUnthread();
+        //StartCoroutine(StartGameThread());
     }
 
     private IEnumerator StartGameThread()
@@ -57,6 +58,15 @@ public class TetherNetBehaviour : MonoBehaviour
         while (thread.IsAlive)
             yield return new WaitForSeconds(.1f);
 
+        _connectionErrorTextField.gameObject.SetActive(!success);
+    }
+
+    private void StartGameUnthread()
+    {
+        bool success = false;
+        Client.GetInfiniteScoreBoard(out AllTimeBoard);
+        Client.GetInfiniteScoreBoard(out DailyBoard);
+        success = _client.StartGame(out CurrentGameKey);
         _connectionErrorTextField.gameObject.SetActive(!success);
     }
 }

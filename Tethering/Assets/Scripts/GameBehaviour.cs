@@ -92,4 +92,15 @@ public class GameBehaviour : MonoBehaviour
         _dailyHighScore.Reload();
         _allTimeHighScore.Reload();
     }
+
+    private void UpdateScoreUnthread()
+    {
+        bool success = false;
+        success = _tetherNet.Client.EndGame(
+            _tetherNet.CurrentGameKey, PointBehaviour.Score, _highscorePlayerName.text);
+
+        _connectionErrorTextField.gameObject.SetActive(!success);
+        _dailyHighScore.Reload();
+        _allTimeHighScore.Reload();
+    }
 }
