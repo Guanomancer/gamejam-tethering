@@ -27,6 +27,7 @@ public class TetherNetBehaviour : MonoBehaviour
     private void Awake()
     {
         _client = new HttpClient(_hostnameOrIpAddress, _port);
+        _client.UseUnity = true;
     }
 
     public bool IsScoreHigh(int score)
