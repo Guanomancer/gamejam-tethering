@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -18,6 +20,23 @@ public class GameBehaviour : MonoBehaviour
     [HideInInspector]
     public float GameTimeOffset = 0;
 
+    [SerializeField]
+    private TetherNetBehaviour _tetherNet;
+
+    [SerializeField]
+    private GameObject _highscoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI _highscorePlayerName;
+
+    [SerializeField]
+    private GameObject _connectionErrorTextField;
+
+    [SerializeField]
+    private HighScoreLoaderBehaviour _dailyHighScore;
+    [SerializeField]
+    private HighScoreLoaderBehaviour _allTimeHighScore;
+
     private void Awake()
     {
         PointBehaviour.Score = 0;
@@ -32,6 +51,18 @@ public class GameBehaviour : MonoBehaviour
         evilSpawn.z += 10f;
         var evil = Instantiate(_evilTetherPrefab, evilSpawn, Quaternion.identity);
         evil.GetComponent<TetherControlBehaviour>().SetTarget(_playerObject.transform);
+        _tetherNet.StartGame();
+    }
+
+    public void EndGame()
+    {
+        if (_tetherNet.IsScoreHigh(PointBehaviour.Score))
+            _highscoreText.SetActive(true);
+    }
+
+    public void RegisterHighscore()
+    {
+        StartCoroutine(UpdateScoreThread());
     }
 
     public void Restart()
@@ -43,5 +74,22 @@ public class GameBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(_gameRestartDelay);
         SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator UpdateScoreThread()
+    {
+        bool success = false;
+        var thread = new Thread(new ThreadStart(() =>
+        {
+            success = _tetherNet.Client.EndGame(
+                _tetherNet.CurrentGameKey, PointBehaviour.Score, _highscorePlayerName.text);
+        }));
+        thread.Start();
+        while (thread.IsAlive)
+            yield return new WaitForSeconds(.1f);
+
+        _connectionErrorTextField.gameObject.SetActive(!success);
+        _dailyHighScore.Reload();
+        _allTimeHighScore.Reload();
     }
 }
