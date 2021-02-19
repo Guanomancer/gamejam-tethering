@@ -30,12 +30,16 @@ public class MusicBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (_musicClips.Length == 0)
+            return;
         if (Time.time > _audioSource.clip.length + _currentStartTime + _interclipDelay)
             PlayRandomClip();
     }
 
     private void PlayRandomClip()
     {
+        if (_musicClips.Length == 0)
+            return;
         int newIndex = 0;
         do
         {

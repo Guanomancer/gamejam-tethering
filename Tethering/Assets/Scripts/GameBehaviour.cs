@@ -22,9 +22,6 @@ public class GameBehaviour : MonoBehaviour
     public float GameTimeOffset = 0;
 
     [SerializeField]
-    private TetherNetBehaviour _tetherNet;
-
-    [SerializeField]
     private GameObject _highscoreText;
 
     [SerializeField]
@@ -32,11 +29,6 @@ public class GameBehaviour : MonoBehaviour
 
     [SerializeField]
     private GameObject _connectionErrorTextField;
-
-    [SerializeField]
-    private HighScoreLoaderBehaviour _dailyHighScore;
-    [SerializeField]
-    private HighScoreLoaderBehaviour _allTimeHighScore;
 
     private void Awake()
     {
@@ -52,25 +44,6 @@ public class GameBehaviour : MonoBehaviour
         evilSpawn.z += 10f;
         var evil = Instantiate(_evilTetherPrefab, evilSpawn, Quaternion.identity);
         evil.GetComponent<TetherControlBehaviour>().SetTarget(_playerObject.transform);
-        _tetherNet.StartGame();
-    }
-
-    public void EndGame()
-    {
-        if (_tetherNet.IsScoreHigh(PointBehaviour.Score))
-            _highscoreText.SetActive(true);
-    }
-
-    public void RegisterHighscore()
-    {
-        StartCoroutine(_tetherNet.Client.SendRequestAndProcessResponse(this,
-               "END_GAME", $"{_tetherNet.CurrentGameKey}\n{PointBehaviour.Score}\n{_highscorePlayerName.text}", (success, code, response) =>
-               {
-                   _connectionErrorTextField.gameObject.SetActive(!success);
-                   _dailyHighScore.Reload();
-                   _allTimeHighScore.Reload();
-               }
-               ));
     }
 
     public void Restart()

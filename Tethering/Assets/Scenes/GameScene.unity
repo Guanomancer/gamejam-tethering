@@ -3165,7 +3165,6 @@ MonoBehaviour:
   _hostnameOrIpAddress: tethig.guanomancer.com
   _port: 42080
   _connectionErrorTextField: {fileID: 1733603890}
-  _errLog: {fileID: 0}
   CurrentGameKey: 
 --- !u!1 &1298263165
 GameObject:
@@ -3369,10 +3368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99c8bd92daa286a48b432e50f070f0f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _musicClips:
-  - {fileID: 8300000, guid: 26364aaf1f64b40c1a047b0bacfbd10e, type: 3}
-  - {fileID: 8300000, guid: 1555836638cd34283a3780a19b58d4c6, type: 3}
-  - {fileID: 8300000, guid: 07f391589664f4e85904fa28802b4aa8, type: 3}
+  _musicClips: []
   _interclipDelay: 2
   _currentIndex: -1
 --- !u!82 &1336997585
