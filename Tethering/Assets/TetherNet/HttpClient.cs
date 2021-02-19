@@ -23,18 +23,14 @@ namespace Tethering.Net
             Port = port;
         }
 
-        public bool StartGame(out string gameKey)
+        public IEnumerator StartGame(Action<bool, int, string> onCompleted)
         {
-            if (SendRequestAndGetResponse("START_GAME", null, out int code, out string text))
-            {
-                gameKey = text;
-                return true;
-            }
-            else
-            {
-                gameKey = null;
-                return false;
-            }
+            yield return SendRequestAndProcessResponse("START_GAME", null, onCompleted);
+        }
+
+        public IEnumerator EndGame(string gameKey, int points, string playerName, Action<bool, int, string> onCompleted)
+        {
+            yield return SendRequestAndProcessResponse("END_GAME", $"{gameKey}\n{points}\n{playerName}", onCompleted);
         }
 
         public bool EndGame(string gameKey, int points, string playerName)
@@ -49,35 +45,39 @@ namespace Tethering.Net
             }
         }
 
-        public bool GetDailyScoreBoard(out List<ScoreEntry> entries)
+        public IEnumerator GetDailyScoreBoard(Action<bool, int, string> onCompleted)
         {
-            if (SendRequestAndGetResponse("GET_DAILY", null, out int code, out string text))
-            {
-                GetScoreBoard(text, out entries);
-                return true;
-            }
-            else
-            {
-                entries = null;
-                return false;
-            }
+            yield return SendRequestAndProcessResponse("GET_DAILY", null, onCompleted);
+
+            //if (SendRequestAndGetResponse("GET_DAILY", null, out int code, out string text))
+            //{
+            //    GetScoreBoard(text, out entries);
+            //    return true;
+            //}
+            //else
+            //{
+            //    entries = null;
+            //    return false;
+            //}
         }
 
-        public bool GetInfiniteScoreBoard(out List<ScoreEntry> entries)
+        public IEnumerator GetInfiniteScoreBoard(Action<bool, int, string> onCompleted)
         {
-            if (SendRequestAndGetResponse("GET_INFINITE", null, out int code, out string text))
-            {
-                GetScoreBoard(text, out entries);
-                return true;
-            }
-            else
-            {
-                entries = null;
-                return false;
-            }
+            yield return SendRequestAndProcessResponse("GET_INFINITE", null, onCompleted);
+
+            //if (SendRequestAndGetResponse("GET_INFINITE", null, out int code, out string text))
+            //{
+            //    GetScoreBoard(text, out entries);
+            //    return true;
+            //}
+            //else
+            //{
+            //    entries = null;
+            //    return false;
+            //}
         }
 
-        private void GetScoreBoard(string text, out List<ScoreEntry> entries)
+        public void GetScoreBoard(string text, out List<ScoreEntry> entries)
         {
             var entryStrings = text.Split('\n');
             entries = new List<ScoreEntry>();
@@ -165,13 +165,16 @@ namespace Tethering.Net
             }
         }
 
-        private IEnumerator SendRequestAndProcessResponse(string method, string content, Action<bool, int, string> onCompleted)
+        public IEnumerator SendRequestAndProcessResponse(string method, string content, Action<bool, int, string> onCompleted)
         {
             UnityWebRequest request;
-            if(content == null)
+            if (content == null)
                 request = UnityWebRequest.Get($"http://{HostnameOrAddress}:{Port}");
             else
+            {
                 request = UnityWebRequest.Post($"http://{HostnameOrAddress}:{Port}", content);
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(content));
+            }
             request.method = method;
             yield return request.SendWebRequest();
 

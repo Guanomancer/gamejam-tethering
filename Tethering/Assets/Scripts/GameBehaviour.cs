@@ -62,7 +62,14 @@ public class GameBehaviour : MonoBehaviour
 
     public void RegisterHighscore()
     {
-        StartCoroutine(UpdateScoreThread());
+        StartCoroutine(_tetherNet.Client.SendRequestAndProcessResponse(
+               "END_GAME", $"{_tetherNet.CurrentGameKey}\n{PointBehaviour.Score}\n{_highscorePlayerName.text}", (success, code, response) =>
+               {
+                   _connectionErrorTextField.gameObject.SetActive(!success);
+                   _dailyHighScore.Reload();
+                   _allTimeHighScore.Reload();
+               }
+               ));
     }
 
     public void Restart()
@@ -74,33 +81,5 @@ public class GameBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(_gameRestartDelay);
         SceneManager.LoadScene(0);
-    }
-
-    private IEnumerator UpdateScoreThread()
-    {
-        bool success = false;
-        var thread = new Thread(new ThreadStart(() =>
-        {
-            success = _tetherNet.Client.EndGame(
-                _tetherNet.CurrentGameKey, PointBehaviour.Score, _highscorePlayerName.text);
-        }));
-        thread.Start();
-        while (thread.IsAlive)
-            yield return new WaitForSeconds(.1f);
-
-        _connectionErrorTextField.gameObject.SetActive(!success);
-        _dailyHighScore.Reload();
-        _allTimeHighScore.Reload();
-    }
-
-    private void UpdateScoreUnthread()
-    {
-        bool success = false;
-        success = _tetherNet.Client.EndGame(
-            _tetherNet.CurrentGameKey, PointBehaviour.Score, _highscorePlayerName.text);
-
-        _connectionErrorTextField.gameObject.SetActive(!success);
-        _dailyHighScore.Reload();
-        _allTimeHighScore.Reload();
     }
 }
