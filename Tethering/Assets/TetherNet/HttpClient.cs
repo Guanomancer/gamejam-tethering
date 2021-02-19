@@ -164,5 +164,41 @@ namespace Tethering.Net
                 }
             }
         }
+
+        private IEnumerator SendRequestAndProcessResponse(string method, string content, Action<bool, int, string> onCompleted)
+        {
+            UnityWebRequest request;
+            if(content == null)
+                request = UnityWebRequest.Get($"http://{HostnameOrAddress}:{Port}");
+            else
+                request = UnityWebRequest.Post($"http://{HostnameOrAddress}:{Port}", content);
+            request.method = method;
+            yield return request.SendWebRequest();
+
+            bool success;
+            int code;
+            string text;
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                using (var stream = new MemoryStream(request.downloadHandler.data))
+                {
+                    byte[] buffer = new byte[10240];
+                    int bytesReceived = stream.Read(buffer, 0, buffer.Length);
+                    Console.WriteLine($"Received {bytesReceived} bytes from the remote host.");
+
+                    success = true;
+                    code = 200;
+                    text = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
+                }
+            }
+            else
+            {
+                success = false;
+                code = 404;
+                text = null;
+            }
+            onCompleted(success, code, text);
+        }
     }
 }
