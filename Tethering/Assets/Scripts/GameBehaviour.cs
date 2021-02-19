@@ -4,6 +4,7 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class GameBehaviour : MonoBehaviour
@@ -62,7 +63,7 @@ public class GameBehaviour : MonoBehaviour
 
     public void RegisterHighscore()
     {
-        StartCoroutine(_tetherNet.Client.SendRequestAndProcessResponse(
+        StartCoroutine(_tetherNet.Client.SendRequestAndProcessResponse(this,
                "END_GAME", $"{_tetherNet.CurrentGameKey}\n{PointBehaviour.Score}\n{_highscorePlayerName.text}", (success, code, response) =>
                {
                    _connectionErrorTextField.gameObject.SetActive(!success);

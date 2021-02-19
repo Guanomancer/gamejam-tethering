@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using TMPro;
 using UnityEngine.Networking;
+using UnityEngine;
 
 namespace Tethering.Net
 {
@@ -23,31 +24,19 @@ namespace Tethering.Net
             Port = port;
         }
 
-        public IEnumerator StartGame(Action<bool, int, string> onCompleted)
+        public IEnumerator StartGame(MonoBehaviour behaviour, Action<bool, int, string> onCompleted)
         {
-            yield return SendRequestAndProcessResponse("START_GAME", null, onCompleted);
+            yield return SendRequestAndProcessResponse(behaviour, "START_GAME", null, onCompleted);
         }
 
-        public IEnumerator EndGame(string gameKey, int points, string playerName, Action<bool, int, string> onCompleted)
+        public IEnumerator EndGame(MonoBehaviour behaviour, string gameKey, int points, string playerName, Action<bool, int, string> onCompleted)
         {
-            yield return SendRequestAndProcessResponse("END_GAME", $"{gameKey}\n{points}\n{playerName}", onCompleted);
+            yield return SendRequestAndProcessResponse(behaviour, "END_GAME", $"{gameKey}\n{points}\n{playerName}", onCompleted);
         }
 
-        public bool EndGame(string gameKey, int points, string playerName)
+        public IEnumerator GetDailyScoreBoard(MonoBehaviour behaviour, Action<bool, int, string> onCompleted)
         {
-            if (SendRequestAndGetResponse("END_GAME", $"{gameKey}\n{points}\n{playerName}", out int code, out string text))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public IEnumerator GetDailyScoreBoard(Action<bool, int, string> onCompleted)
-        {
-            yield return SendRequestAndProcessResponse("GET_DAILY", null, onCompleted);
+            yield return SendRequestAndProcessResponse(behaviour, "GET_DAILY", null, onCompleted);
 
             //if (SendRequestAndGetResponse("GET_DAILY", null, out int code, out string text))
             //{
@@ -61,9 +50,9 @@ namespace Tethering.Net
             //}
         }
 
-        public IEnumerator GetInfiniteScoreBoard(Action<bool, int, string> onCompleted)
+        public IEnumerator GetInfiniteScoreBoard(MonoBehaviour behaviour, Action<bool, int, string> onCompleted)
         {
-            yield return SendRequestAndProcessResponse("GET_INFINITE", null, onCompleted);
+            yield return SendRequestAndProcessResponse(behaviour, "GET_INFINITE", null, onCompleted);
 
             //if (SendRequestAndGetResponse("GET_INFINITE", null, out int code, out string text))
             //{
@@ -89,83 +78,7 @@ namespace Tethering.Net
             }
         }
 
-        public bool SendGet()
-        {
-            if (SendRequestAndGetResponse("GET", null, out int code, out string text))
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private bool SendRequestAndGetResponse(string method, string content, out int code, out string text)
-        {
-            if (!UseUnity)
-            {
-
-                var request = HttpWebRequest.Create($"http://{HostnameOrAddress}:{Port}");
-                request.Timeout = 5000;
-                request.Method = method;
-                if (content != null)
-                {
-                    using (var stream = request.GetRequestStream())
-                    {
-                        var buffer = Encoding.UTF8.GetBytes(content);
-                        stream.Write(buffer, 0, buffer.Length);
-                        stream.Close();
-                    }
-                }
-                try
-                {
-                    using (var response = request.GetResponse())
-                    {
-                        using (var stream = response.GetResponseStream())
-                        {
-                            byte[] buffer = new byte[10240];
-                            int bytesReceived = stream.Read(buffer, 0, buffer.Length);
-                            Console.WriteLine($"Received {bytesReceived} bytes from the remote host.");
-                            code = 200;
-                            text = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-                            return true;
-                        }
-                    }
-                }
-                catch
-                {
-                    code = 404;
-                    text = null;
-                    return false;
-                }
-            }
-            else
-            {
-                var request = UnityWebRequest.Get($"http://{HostnameOrAddress}:{Port}");
-                request.method = method;
-                request.SendWebRequest();
-                if (request.result == UnityWebRequest.Result.Success)
-                {
-                    while (!request.isDone) ; // must run as coroutine
-                    using (var stream = new MemoryStream(request.downloadHandler.data))
-                    {
-                        byte[] buffer = new byte[10240];
-                        int bytesReceived = stream.Read(buffer, 0, buffer.Length);
-                        Console.WriteLine($"Received {bytesReceived} bytes from the remote host.");
-                        code = 200;
-                        text = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-                        return true;
-                    }
-                }
-                else
-                {
-                    code = 404;
-                    text = null;
-                    return false;
-                }
-            }
-        }
-
-        public IEnumerator SendRequestAndProcessResponse(string method, string content, Action<bool, int, string> onCompleted)
+        public IEnumerator SendRequestAndProcessResponse(MonoBehaviour behaviour, string method, string content, Action<bool, int, string> onCompleted)
         {
             UnityWebRequest request;
             if (content == null)

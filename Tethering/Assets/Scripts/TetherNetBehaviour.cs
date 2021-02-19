@@ -42,21 +42,21 @@ public class TetherNetBehaviour : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(Client.GetDailyScoreBoard((success, code, text) =>
+        StartCoroutine(Client.GetDailyScoreBoard(this, (success, code, text) =>
         {
             if (success)
                 Client.GetScoreBoard(text, out DailyBoard);
             else
                 DailyBoard = null;
         }));
-        StartCoroutine(Client.GetInfiniteScoreBoard((success, code, text) =>
+        StartCoroutine(Client.GetInfiniteScoreBoard(this, (success, code, text) =>
         {
             if (success)
                 Client.GetScoreBoard(text, out AllTimeBoard);
             else
                 AllTimeBoard = null;
         }));
-        StartCoroutine(Client.StartGame((success, code, response) =>
+        StartCoroutine(Client.StartGame(this, (success, code, response) =>
                  {
                      CurrentGameKey = success ? response : "";
                      _connectionErrorTextField.gameObject.SetActive(!success);

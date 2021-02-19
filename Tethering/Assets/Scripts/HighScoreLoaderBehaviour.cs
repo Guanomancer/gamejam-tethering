@@ -41,7 +41,7 @@ public class HighScoreLoaderBehaviour : MonoBehaviour
         switch(_boardType)
         {
             case BoardType.Daily:
-                StartCoroutine(_tetherNet.Client.GetDailyScoreBoard((success, code, text) =>
+                StartCoroutine(_tetherNet.Client.GetDailyScoreBoard(this, (success, code, text) =>
                 {
                     if (success)
                     {
@@ -64,7 +64,7 @@ public class HighScoreLoaderBehaviour : MonoBehaviour
                 break;
             case BoardType.AllTime:
             default:
-                StartCoroutine(_tetherNet.Client.GetInfiniteScoreBoard((success, code, text) =>
+                StartCoroutine(_tetherNet.Client.GetInfiniteScoreBoard(this, (success, code, text) =>
                 {
                     if (success)
                     {
